@@ -68,10 +68,10 @@ export default function EmployeesTable(props: any) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {employees.map((employee, idx: number) => (
+                  {employees.map((employee, id: number) => (
                     <EmployeeRow
-                      key={idx}
-                      idx={idx}
+                      key={id}
+                      id={id}
                       employee={employee}
                       openUpdateForm={openUpdateForm}
                       removeEmployee={removeEmployee}

@@ -27,14 +27,14 @@ const useStyles = makeStyles((theme) => ({
 export default function EmployeeRow(props: any) {
 
   const classes = useStyles();
-  const { idx, employee } = props;
+  const { id, employee } = props;
 
   const openUpdateForm = () => {
-    props.openUpdateForm(idx, employee);
+    props.openUpdateForm(id, employee);
   };
 
   const removeEmployee = () => {
-    props.removeEmployee(idx);
+    props.removeEmployee(id);
   };
 
 

@@ -45,7 +45,7 @@ export default function Home() {
     if (search == '') return;
     let employeesCopy = JSON.parse(JSON.stringify(employees));
     console.log('employeesCopy',employeesCopy);
-    const newEmployees: Employee[] = JSON.parse(JSON.stringify(employees)).filter((employee, idx) => {
+    const newEmployees: Employee[] = JSON.parse(JSON.stringify(employees)).filter((employee, id) => {
       return employee.firstName.includes(search) || employee.lastName.includes(search);
     });
     setEmployeesDisplay(newEmployees);
@@ -70,10 +70,10 @@ export default function Home() {
     });
   };
 
-  const removeEmployee = (idx: number) => {
+  const removeEmployee = (id: number) => {
     setEmployees((prevEmployees: Employee[]) => {
       let newEmployees: Employee[] = [...prevEmployees];
-      newEmployees.splice(idx, 1);
+      newEmployees.splice(id, 1);
       return newEmployees;
     });
   };
