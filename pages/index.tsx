@@ -27,11 +27,11 @@ export default function Home() {
     const initialEmployees = () => JSON.parse(window.localStorage.getItem('employees') ?? '[]');
     setEmployees(initialEmployees());
     setEmployeesDisplay(initialEmployees());
-  }, [])
+  }, []);
 
   const updateEmployeesPersistent = () => {
     window.localStorage.setItem('employees', JSON.stringify(employees));
-  }
+  };
 
   useEffect(() => {
     updateEmployeesPersistent();
@@ -46,7 +46,7 @@ export default function Home() {
     let employeesCopy = JSON.parse(JSON.stringify(employees));
     console.log('employeesCopy',employeesCopy);
     const newEmployees: Employee[] = JSON.parse(JSON.stringify(employees)).filter((employee, id) => {
-      return employee.firstName.includes(search) || employee.lastName.includes(search);
+      return `${employee.firstName} ${employee.lastName}`.toLowerCase().includes(search.toLowerCase());
     });
     setEmployeesDisplay(newEmployees);
   };
@@ -78,10 +78,15 @@ export default function Home() {
     });
   };
 
+  const handleDeleteAllEmployees = () => {
+    setEmployees([]);
+  };
+
   const openUpdateForm = (id: number, employee: Employee) => {
     setIsUpdate(true);
     handleNewEmployeeDialogOpen(id, employee);
   };
+
 
   const handleNewEmployeeDialogOpen = (id = null, employee: Employee = null) => {
     if (id === null || employee == null) {
@@ -112,7 +117,6 @@ export default function Home() {
     setEmail('');
   }
 
-
   return (
     <>
       <Head>
@@ -120,6 +124,7 @@ export default function Home() {
       </Head>
       <Header
         newEmployeeDialogOpen={newEmployeeDialogOpen}
+        handleDeleteAllEmployees={handleDeleteAllEmployees}
         handleNewEmployeeDialogOpen={handleNewEmployeeDialogOpen}
         handleNewEmployeeDialogClose={handleNewEmployeeDialogClose}
         search={search}

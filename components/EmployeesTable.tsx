@@ -30,18 +30,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function createData(firstName: String, lastName: String, email: String) {
-  return { firstName, lastName, email };
-}
-
-const rows = [
-  createData('Frozen yoghurt', "sdgohsgo", "fasgag@gmail.com"),
-  createData('Ice cream sandwich', "sdgohsgo", "asdgsadgas@gmail.com"),
-  createData('Eclair', "sdgohsgo", "agdasg@gmail.com"),
-  createData('Cupcake', "sdgohsgo", "luasduuau@gmail.com"),
-  createData('Gingerbread', "sdgohsgo", "asgagasdg@gmail.com"),
-];
-
 export default function EmployeesTable(props: any) {
   const classes = useStyles();
   const {

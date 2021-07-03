@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import InputBase from '@material-ui/core/InputBase';
 
+import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import SearchIcon from '@material-ui/icons/Search';
 import { ButtonGroup } from '@material-ui/core';
@@ -28,6 +29,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.success.main,
     '&:hover': {
       backgroundColor: theme.palette.success.light,
+    },
+  },
+  removeButton: {
+    backgroundColor: theme.palette.error.main,
+    '&:hover': {
+      backgroundColor: theme.palette.error.light,
     },
   },
   filterButton: {
@@ -91,6 +98,10 @@ export default function Header(props) {
   const handleNewEmployeeDialogOpen = () => {
     props.handleNewEmployeeDialogOpen(!props.newEmployeeDialogOpen);
   }
+
+  const handleDeleteAllEmployees = () => {
+    props.handleDeleteAllEmployees();
+  }
   return (
     <React.Fragment>
       <CssBaseline />
@@ -102,6 +113,10 @@ export default function Header(props) {
             </Typography>
             <Button color="inherit" startIcon={<AddCircleIcon />} className={classes.addButton} onClick={handleNewEmployeeDialogOpen}>
               Add new Employee
+            </Button>
+            &nbsp;
+            <Button color="inherit" startIcon={<DeleteIcon />} className={classes.removeButton} onClick={handleDeleteAllEmployees}>
+              Delete all Employees
             </Button>
           </Toolbar>
           <Toolbar>
