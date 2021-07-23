@@ -39,7 +39,7 @@ export default function EmployeeRow(props: any) {
 
 
   return (
-    <TableRow>
+    <TableRow  style={{ display: employee.isHidden ? 'none' : 'table-row' }}>
       <TableCell component="th" scope="row">{employee.firstName} {employee.lastName}</TableCell>
       <TableCell >{employee.email}</TableCell>
       <TableCell align="center">

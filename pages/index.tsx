@@ -10,7 +10,6 @@ import { Employee } from '../types/types';
 export default function Home() {
   // Data state.
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [employeesDisplay, setEmployeesDisplay] = useState<Employee[]>([]);
 
   // Search Field state.
   const [search, setSearch] = useState<string>('');
@@ -26,40 +25,43 @@ export default function Home() {
   useEffect(() => {
     const initialEmployees = () => JSON.parse(window.localStorage.getItem('employees') ?? '[]');
     setEmployees(initialEmployees());
-    setEmployeesDisplay(initialEmployees());
   }, []);
 
   const updateEmployeesPersistent = () => {
     window.localStorage.setItem('employees', JSON.stringify(employees));
   };
 
-  useEffect(() => {
-    updateEmployeesPersistent();
-    setEmployeesDisplay(JSON.parse(JSON.stringify(employees)));
-    filterEmployees();
-  },
-    [employees],
-  );
-
   const filterEmployees = () => {
+    console.log('filter');
     if (search == '') return;
     let employeesCopy = JSON.parse(JSON.stringify(employees));
-    console.log('employeesCopy',employeesCopy);
-    const newEmployees: Employee[] = JSON.parse(JSON.stringify(employees)).filter((employee, id) => {
-      return `${employee.firstName} ${employee.lastName}`.toLowerCase().includes(search.toLowerCase());
+    employeesCopy.forEach((employee, id, arr) => {
+      if (`${employee.firstName} ${employee.lastName}`.toLowerCase().includes(search.toLowerCase())) {
+        employee.isHidden = false;
+        arr[id] = employee;
+      } else {
+        employee.isHidden = true;
+        arr[id] = employee;
+      }
     });
-    setEmployeesDisplay(newEmployees);
+    setEmployees(employeesCopy);
   };
 
   const resetFilter = () => {
     setSearch('');
     const initialEmployees = () => JSON.parse(window.localStorage.getItem('employees') ?? '[]');
-    setEmployeesDisplay(initialEmployees());
+    let employeesCopy = JSON.parse(JSON.stringify(initialEmployees()));
+    employeesCopy.forEach((employee, id, arr) => {
+      employee.isHidden = false;
+      arr[id] = employee;
+    });
+    setEmployees(employeesCopy);
   };
 
   const addEmployee = (employee: Employee) => {
     setIsUpdate(false);
     setEmployees((prevEmployees: Employee[]) => [...JSON.parse(JSON.stringify(prevEmployees)), employee]);
+    updateEmployeesPersistent();
   };
 
   const updateEmployee = (employee: Employee) => {
@@ -68,6 +70,7 @@ export default function Home() {
       newEmployees[id] = employee;
       return newEmployees;
     });
+    updateEmployeesPersistent();
   };
 
   const removeEmployee = (id: number) => {
@@ -76,10 +79,12 @@ export default function Home() {
       newEmployees.splice(id, 1);
       return newEmployees;
     });
+    updateEmployeesPersistent();
   };
 
   const handleDeleteAllEmployees = () => {
     setEmployees([]);
+    updateEmployeesPersistent();
   };
 
   const openUpdateForm = (id: number, employee: Employee) => {
@@ -133,7 +138,7 @@ export default function Home() {
         resetFilter={resetFilter}
       />
       <EmployeesTable
-        employees={employeesDisplay}
+        employees={employees}
         handleNewEmployeeDialogOpen={handleNewEmployeeDialogOpen}
         handleNewEmployeeDialogClose={handleNewEmployeeDialogClose}
         removeEmployee={removeEmployee}
