@@ -27,8 +27,8 @@ export default function Home() {
     setEmployees(initialEmployees());
   }, []);
 
-  const updateEmployeesPersistent = () => {
-    window.localStorage.setItem('employees', JSON.stringify(employees));
+  const updateEmployeesPersistent = (persistentEmployees = employees) => {
+    window.localStorage.setItem('employees', JSON.stringify(persistentEmployees));
   };
 
   const filterEmployees = () => {
@@ -60,31 +60,34 @@ export default function Home() {
 
   const addEmployee = (employee: Employee) => {
     setIsUpdate(false);
-    setEmployees((prevEmployees: Employee[]) => [...JSON.parse(JSON.stringify(prevEmployees)), employee]);
-    updateEmployeesPersistent();
+    setEmployees((prevEmployees: Employee[]) => {
+      const newEmployees = [...JSON.parse(JSON.stringify(prevEmployees)), employee];
+      updateEmployeesPersistent(newEmployees);
+      return newEmployees;
+    });
   };
 
   const updateEmployee = (employee: Employee) => {
     setEmployees((prevEmployees: Employee[]) => {
       const newEmployees: Employee[] = [...prevEmployees];
       newEmployees[id] = employee;
+      updateEmployeesPersistent(newEmployees);
       return newEmployees;
     });
-    updateEmployeesPersistent();
   };
 
   const removeEmployee = (id: number) => {
     setEmployees((prevEmployees: Employee[]) => {
       let newEmployees: Employee[] = [...prevEmployees];
       newEmployees.splice(id, 1);
+      updateEmployeesPersistent(newEmployees);
       return newEmployees;
     });
-    updateEmployeesPersistent();
   };
 
   const handleDeleteAllEmployees = () => {
     setEmployees([]);
-    updateEmployeesPersistent();
+    updateEmployeesPersistent([]);
   };
 
   const openUpdateForm = (id: number, employee: Employee) => {
